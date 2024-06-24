@@ -1,0 +1,24 @@
+{
+  "name": "screeps-vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build -w",
+    "preview": "vite preview",
+    "postinstall": "node copy-types.cjs"
+  },
+  "devDependencies": {
+    "@types/lodash": "^3.10.1",
+    "rollup-plugin-copy": "^3.4.0",
+    "vite": "^5.2.0",
+    "@types/screeps": "^3.3.8"
+  },
+  "prettier": {
+    "printWidth": 150,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}

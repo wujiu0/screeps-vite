@@ -6,7 +6,7 @@ export default {
     minify: false,
     sourcemap: false,
     lib: {
-      entry: 'src/main.ts',
+      entry: 'src/main.js',
       name: 'main',
       fileName: 'main',
       formats: ['cjs'],
@@ -21,7 +21,11 @@ export default {
         copy({
           targets: [
             {
-              src: screepsConfig.sourceDir,
+              src: 'typings/*',
+              dest: 'node_modules/@types/screeps-user',
+            },
+            {
+              src: 'dist/*',
               dest: screepsConfig.targetDir,
             },
           ],

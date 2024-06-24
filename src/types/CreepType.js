@@ -3,7 +3,7 @@
  * @type {CreepTypeNew}
  */
 export const HARVESTER = {
-  role: 'harvester',
+  role: 'HARVESTER',
   costs: [300, 450, 650],
   300: [WORK, CARRY, CARRY, MOVE, MOVE],
   450: [WORK, WORK, WORK, CARRY, MOVE, MOVE],
@@ -13,7 +13,7 @@ export const HARVESTER = {
  * @type {CreepTypeNew}
  */
 export const UPGRADER = {
-  role: 'upgrader',
+  role: 'UPGRADER',
   costs: [300, 550, 750],
   300: [WORK, WORK, CARRY, MOVE],
   550: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
@@ -23,7 +23,7 @@ export const UPGRADER = {
  * @type {CreepTypeNew}
  */
 export const BUILDER = {
-  role: 'builder',
+  role: 'BUILDER',
   costs: [300, 400, 750],
   300: [WORK, CARRY, MOVE, CARRY, MOVE],
   400: [WORK, WORK, CARRY, MOVE, CARRY, MOVE],
@@ -33,7 +33,7 @@ export const BUILDER = {
  * @type {CreepTypeNew}
  */
 export const COMMUNICATOR = {
-  role: 'communicator',
+  role: 'COMMUNICATOR',
   costs: [300],
   50: [MOVE],
 };
@@ -41,7 +41,7 @@ export const COMMUNICATOR = {
  * @type {CreepTypeNew}
  */
 export const TRANSPORTER = {
-  role: 'transporter',
+  role: 'TRANSPORTER',
   costs: [300, 500, 650],
   300: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
   500: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
@@ -53,7 +53,7 @@ export const TRANSPORTER = {
  * @type {CreepTypeNew}
  */
 export const REPAIRER = {
-  role: 'repairer',
+  role: 'REPAIRER',
   costs: [300, 500],
   500: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
 };
@@ -62,10 +62,38 @@ export const REPAIRER = {
  * @type {CreepTypeNew}
  */
 export const TEMP = {
-  role: 'temp',
+  role: 'TEMP',
   costs: [200],
   200: [WORK, CARRY, MOVE],
 };
+
+
+/**
+ * 获取此类型当前最高可用的构成
+ * @param {CreepTypeNew} type
+ * @param {number} energyCapacityAvailable
+ * @returns {CreepType}
+ */
+export function getCurrentCreepBody(type, energyCapacityAvailable) {
+  const {costs} = type;
+  const result = new CreepType(type.role, [], 0);
+  if (energyCapacityAvailable < costs[0]) {
+    result.body = type[costs[0]];
+    result.cost = costs[0];
+  } else if (energyCapacityAvailable >= costs[costs.length - 1]) {
+    result.body = type[costs[costs.length - 1]];
+    result.cost = costs[costs.length - 1];
+  } else {
+    for (let i = 0; i < costs.length - 1; i++) {
+      if (energyCapacityAvailable >= costs[i] && energyCapacityAvailable < costs[i + 1]) {
+        result.body = type[costs[i]];
+        result.cost = costs[i];
+        break;
+      }
+    }
+  }
+  return result;
+}
 
 
 export default class CreepType {
@@ -81,13 +109,3 @@ export default class CreepType {
   }
 }
 
-export const CREEP_TYPES = {
-  HARVESTER,
-  UPGRADER,
-  BUILDER,
-  COMMUNICATOR,
-  TRANSPORTER,
-  REPAIRER,
-  TEMP,
-  getCurrentCreepBody,
-};

@@ -1,3 +1,4 @@
+//@ts-nocheck
 interface CreepType {
   role: roleType;
   body: BodyPartConstant[];

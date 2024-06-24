@@ -1,15 +1,17 @@
 import config from '../config/config.js';
-import { getCurrentCreepBody } from '../utils/CreepUtil.js';
+import { BUILDER, getCurrentCreepBody, HARVESTER, REPAIRER, TRANSPORTER, UPGRADER } from '../types/CreepType.js';
 import RoomUtil from '../utils/RoomUtil.js';
 
 const Producer = {
   /**
    *
    * @param {StructureSpawn} spawn
-   * @param {CreepType} type
+   * @param {CreepTypeNew} typeNew
    * @param {string} [room]
    */
-  produceCreep(spawn, type, room) {
+  produceCreep(spawn, typeNew, room) {
+
+    const type = getCurrentCreepBody(typeNew, spawn.room.energyAvailable);
     console.log(`capacity:${spawn.room.energyCapacityAvailable},available:${spawn.room.energyAvailable},produce:${type.role}-${type.cost}`);
     if (spawn.room.energyAvailable >= type.cost && !spawn.spawning) {
       // 类型计数器++
@@ -42,10 +44,9 @@ const Producer = {
    *
    * @param {StructureSpawn} spawn
    * @param {CreepTypeNew} typeNew
-   * @param {string} room
+   * @param {string} [room]
    */
   produceCreepNew(spawn, typeNew, room) {
-    const type = getCurrentCreepBody(typeNew, spawn.room.energyAvailable);
     this.produceCreep(spawn, type, room);
   },
 
@@ -76,15 +77,15 @@ const Producer = {
 
     // 优先级：harvester>transporter>upgrader>repairer>builder
     if (harvester.count < config.SPAWN_MAX_CREEP_COUNT.harvester) {
-      Producer.produceCreepNew(spawn, CreepTypeNew.HARVESTER);
+      Producer.produceCreepNew(spawn, HARVESTER);
     } else if (RoomUtil.findAllContainer(spawn.room).length > 0 && transporter.count < config.SPAWN_MAX_CREEP_COUNT.transporter) {
-      Producer.produceCreepNew(spawn, CreepTypeNew.TRANSPORTER);
+      Producer.produceCreepNew(spawn, TRANSPORTER);
     } else if (upgrader.count < config.SPAWN_MAX_CREEP_COUNT.upgrader) {
-      Producer.produceCreepNew(spawn, CreepTypeNew.UPGRADER);
+      Producer.produceCreepNew(spawn, UPGRADER);
     } else if (repairer.count < config.SPAWN_MAX_CREEP_COUNT.repairer) {
-      Producer.produceCreepNew(spawn, CreepTypeNew.REPAIRER);
+      Producer.produceCreepNew(spawn, REPAIRER);
     } else if (builder.count < config.SPAWN_MAX_CREEP_COUNT.builder) {
-      Producer.produceCreepNew(spawn, CreepTypeNew.BUILDER);
+      Producer.produceCreepNew(spawn, BUILDER);
     } else {
       console.log('nothing to do');
     }

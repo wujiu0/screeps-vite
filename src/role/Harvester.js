@@ -1,10 +1,10 @@
-import CreepUtil from '../../utils/CreepUtil.js';
-import RoomUtil from '../../utils/RoomUtil.js';
+import CreepUtil from '../utils/CreepUtil.js';
+import RoomUtil from '../utils/RoomUtil.js';
 
 /**
  * energy 采集收获者
  */
-const Harvester = {
+export default {
   run(creep) {
     CreepUtil.checkLifeTime(creep);
     // 首先检查creep所处的房间是否正确，如果不正确，就移动到正确的房间
@@ -45,21 +45,22 @@ const Harvester = {
 
   /**
    * 静态采集能量
-   * @param creep 采集者
-   * @param source 能量源
-   * @param workplace 工作地点
+   * @param {Creep} creep 采集者
+   * @param {Source} source 能量源
+   * @param {RoomPosition} workplace 工作地点
    */
-  staticHarvest(creep: Creep, source: Source, workplace: RoomPosition) {
+  staticHarvest(creep, source, workplace) {
     creep.moveTo(workplace, {visualizePathStyle: {stroke: '#ffaa00'}});
     if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
     }
   },
+
   /**
    * 采集能量
-   * @param creep 采集者
-   * @param source 能量源
+   * @param {Creep} creep 采集者
+   * @param {Source} source 能量源
    */
-  harvest(creep: Creep, source: Source) {
+  harvest(creep, source) {
     if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
       creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
     }
@@ -67,14 +68,13 @@ const Harvester = {
 
   /**
    * 输送能量
-   * @param creep
-   * @param target
+   * @param {Creep} creep
+   * @param {StructureSpawn|StructureExtension} target
    */
-  transfer(creep: Creep, target: StructureSpawn | StructureExtension) {
+  transfer(creep, target) {
     if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
     }
   },
-
 };
 

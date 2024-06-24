@@ -1,3 +1,5 @@
+import CreepType from '../types/CreepType.js';
+
 export default {
   /**
    * 检查creep是否需要续命
@@ -89,30 +91,3 @@ export default {
     return res;
   },
 };
-
-/**
- * 获取此类型当前最高可用的构成
- * @param {CreepTypeNew} type
- * @param {number} energyCapacityAvailable
- * @returns {CreepType}
- */
-export function getCurrentCreepBody(type, energyCapacityAvailable) {
-  const {costs} = type;
-  const result = new CreepType(type.role, [], 0);
-  if (energyCapacityAvailable < costs[0]) {
-    result.body = type[costs[0]];
-    result.cost = costs[0];
-  } else if (energyCapacityAvailable >= costs[costs.length - 1]) {
-    result.body = type[costs[costs.length - 1]];
-    result.cost = costs[costs.length - 1];
-  } else {
-    for (let i = 0; i < costs.length - 1; i++) {
-      if (energyCapacityAvailable >= costs[i] && energyCapacityAvailable < costs[i + 1]) {
-        result.body = type[costs[i]];
-        result.cost = costs[i];
-        break;
-      }
-    }
-  }
-  return result;
-}

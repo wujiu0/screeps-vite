@@ -1,11 +1,14 @@
-import CreepUtil from '../../utils/CreepUtil.ts';
-import RoomUtil from '../../utils/RoomUtil.ts';
+import CreepUtil from '../utils/CreepUtil.js';
+import RoomUtil from '../utils/RoomUtil.js';
 
 /**
  * controller 升级者
  */
 const Upgrader = {
-  run(creep: Creep) {
+  /**
+   * @param {Creep} creep
+   */
+  run(creep) {
     CreepUtil.checkLifeTime(creep);
     // creep.say('U');
     // 解锁第三个container，围绕其进行升级
@@ -13,11 +16,11 @@ const Upgrader = {
 
     // 更改状态
     (function () {
-      if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
+      if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] === 0) {
         creep.memory.upgrading = false;
         // creep.say(creep.name.substring(creep.name.length - 1) + '🔄');
       }
-      if (!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
+      if (!creep.memory.upgrading && creep.store.getFreeCapacity() === 0) {
         creep.memory.upgrading = true;
         // creep.say(creep.name.substring(creep.name.length - 1) + '⚡');
       }

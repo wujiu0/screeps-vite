@@ -1,6 +1,6 @@
-import CreepUtil from '../../utils/CreepUtil.js';
-import RoomUtil from '../../utils/RoomUtil.js';
-import InfoUtil from '../../utils/InfoUtil.js';
+import CreepUtil from '../utils/CreepUtil.js';
+import RoomUtil from '../utils/RoomUtil.js';
+import InfoUtil from '../utils/InfoUtil.js';
 
 /**
  * energy 运输者

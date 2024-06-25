@@ -12,7 +12,7 @@ interface CreepTypeNew {
   [index: number]: BodyPartConstant[];
 }
 
-type roleType = 'harvester' | 'transporter' | 'upgrader' | 'builder' | 'communicator' | 'repairer' | 'temp';
+type roleType = 'HARVESTER' | 'TRANSPORTER' | 'UPGRADER' | 'BUILDER' | 'COMMUNICATOR' | 'REPAIRER' | 'TEMP';
 
 interface CreepMemory {
   /**

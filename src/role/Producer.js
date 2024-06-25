@@ -1,8 +1,9 @@
 import config from '../config/config.js';
 import { BUILDER, getCurrentCreepBody, HARVESTER, REPAIRER, TRANSPORTER, UPGRADER } from '../types/CreepType.js';
 import RoomUtil from '../utils/RoomUtil.js';
+import roleStrategies from './roleStrategies.js';
 
-const Producer = {
+const producer = {
   /**
    *
    * @param {StructureSpawn} spawn
@@ -54,19 +55,19 @@ const Producer = {
    *
    * @param {StructureSpawn} spawn
    */
-  init(spawn) {
+  initSpawn(spawn) {
     if (!spawn.memory.initFlag) {
       spawn.memory.creepsStatus = config.SPAWN_INIT_CONFIG;
       spawn.memory.initFlag = true;
     }
-    this.setConfig(spawn);
+    this.setProductionRule(spawn);
   },
 
   /**
    *
    * @param {StructureSpawn} spawn
    */
-  setConfig(spawn) {
+  setProductionRule(spawn) {
     const {
       harvester,
       transporter,
@@ -77,19 +78,31 @@ const Producer = {
 
     // 优先级：harvester>transporter>upgrader>repairer>builder
     if (harvester.count < config.SPAWN_MAX_CREEP_COUNT.harvester) {
-      Producer.produceCreepNew(spawn, HARVESTER);
+      producer.produceCreepNew(spawn, HARVESTER);
     } else if (RoomUtil.findAllContainer(spawn.room).length > 0 && transporter.count < config.SPAWN_MAX_CREEP_COUNT.transporter) {
-      Producer.produceCreepNew(spawn, TRANSPORTER);
+      producer.produceCreepNew(spawn, TRANSPORTER);
     } else if (upgrader.count < config.SPAWN_MAX_CREEP_COUNT.upgrader) {
-      Producer.produceCreepNew(spawn, UPGRADER);
+      producer.produceCreepNew(spawn, UPGRADER);
     } else if (repairer.count < config.SPAWN_MAX_CREEP_COUNT.repairer) {
-      Producer.produceCreepNew(spawn, REPAIRER);
+      producer.produceCreepNew(spawn, REPAIRER);
     } else if (builder.count < config.SPAWN_MAX_CREEP_COUNT.builder) {
-      Producer.produceCreepNew(spawn, BUILDER);
+      producer.produceCreepNew(spawn, BUILDER);
     } else {
       console.log('nothing to do');
     }
   },
+
+  setWorkRules() {
+    for (let name in Game.creeps) {
+      const creep = Game.creeps[name];
+      const role = creep.memory.role;
+      if (roleStrategies[role]) {
+        roleStrategies[role].run(creep);
+      } else {
+        console.log(`${creep.name}, ${creep.memory.role} is not defined`);
+      }
+    }
+  },
 };
 
-export default Producer;
+export default producer;

@@ -7,15 +7,18 @@ import InfoUtil from '../utils/InfoUtil.js';
  *  这里采取优先输送原则，当身上有能量时，优先输送能量，当身上没有能量时，再去获取能量
  */
 export default {
-  run(creep: Creep) {
+  /**
+   * @param {Creep} creep
+   */
+  run(creep) {
     CreepUtil.checkLifeTime(creep);
     creep.say('T');
     // 改变状态
-    if (creep.memory.transferring && creep.store[RESOURCE_ENERGY] == 0) {
+    if (creep.memory.transferring && creep.store[RESOURCE_ENERGY] === 0) {
       creep.memory.transferring = false;
       creep.say('🔄takeUp');
     }
-    if (!creep.memory.transferring && creep.store.getFreeCapacity() == 0) {
+    if (!creep.memory.transferring && creep.store.getFreeCapacity() === 0) {
       creep.memory.transferring = true;
       creep.say('✅transfer');
     }

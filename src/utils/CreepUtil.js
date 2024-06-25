@@ -1,5 +1,3 @@
-import CreepType from '../types/CreepType.js';
-
 export default {
   /**
    * 检查creep是否需要续命
@@ -11,7 +9,7 @@ export default {
     if (creep.memory.tmp) return;
 
     // 如果存活时间不足20，就开始续命
-    // 注：判断条件不能设置为小于50，计数器会出现问题
+    // 注：判断条件不能设置为【小于】50，计数器会出现问题
     if (creep.ticksToLive && creep.ticksToLive === 50) {
       creep.say('🔄 renew');
       const spawn = Game.spawns[creep.memory.spawn];
@@ -82,6 +80,7 @@ export default {
    * 输送能量
    * @param {Creep} creep
    * @param {StructureSpawn | StructureExtension | StructureContainer | StructureStorage | StructureTower} target
+   * @return {number}
    */
   transfer(creep, target) {
     const res = creep.transfer(target, RESOURCE_ENERGY);

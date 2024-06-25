@@ -7,9 +7,7 @@ export default {
    */
   findAllEnergyStructure(room) {
     return room.find(FIND_MY_STRUCTURES)
-      .filter((structure) => {
-        return structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN;
-      });
+      .filter((structure) => structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN);
   },
   /**
    * 寻找有空间的spawn和extension
@@ -19,7 +17,6 @@ export default {
   findSurplusEnergyStructure(room) {
     return this.findAllEnergyStructure(room)
       .filter((structure) => structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-
   },
   /**
    * 寻找有能量的spawn和extension

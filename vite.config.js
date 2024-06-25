@@ -20,6 +20,7 @@ export default {
       plugins: [
         copy({
           targets: [
+            // 该项目为js项目，仍可使用.d.ts
             {
               src: 'typings/*',
               dest: 'node_modules/@types/screeps-user',

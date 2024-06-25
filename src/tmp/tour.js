@@ -1,6 +1,10 @@
 Game.spawns['Spawn0'].room.controller.activateSafeMode();
 
 // tour5: tower
+/**
+ *
+ * @type {StructureTower}
+ */
 const tower = Game.getObjectById('4ca328272db223b75db1a44f');
 if (tower) {
   const closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -10,7 +14,7 @@ if (tower) {
     tower.repair(closestDamagedStructure);
   }
 
-  var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+  const closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
   if (closestHostile) {
     tower.attack(closestHostile);
   }

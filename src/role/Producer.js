@@ -6,7 +6,7 @@ const Producer = {
   /**
    *
    * @param {StructureSpawn} spawn
-   * @param {CreepTypeNew} typeNew
+   * @param {roleType} typeNew
    * @param {string} [room]
    */
   produceCreep(spawn, typeNew, room) {
@@ -47,7 +47,7 @@ const Producer = {
    * @param {string} [room]
    */
   produceCreepNew(spawn, typeNew, room) {
-    this.produceCreep(spawn, type, room);
+    this.produceCreep(spawn, typeNew, room);
   },
 
   /**
@@ -77,9 +77,9 @@ const Producer = {
 
     // 优先级：harvester>transporter>upgrader>repairer>builder
     if (harvester.count < config.SPAWN_MAX_CREEP_COUNT.harvester) {
-      Producer.produceCreepNew(spawn, HARVESTER);
+      Producer.produceCreep(spawn, 'HARVESTER');
     } else if (RoomUtil.findAllContainer(spawn.room).length > 0 && transporter.count < config.SPAWN_MAX_CREEP_COUNT.transporter) {
-      Producer.produceCreepNew(spawn, TRANSPORTER);
+      Producer.produceCreepNew(spawn, '');
     } else if (upgrader.count < config.SPAWN_MAX_CREEP_COUNT.upgrader) {
       Producer.produceCreepNew(spawn, UPGRADER);
     } else if (repairer.count < config.SPAWN_MAX_CREEP_COUNT.repairer) {

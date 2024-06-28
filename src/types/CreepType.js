@@ -49,13 +49,14 @@ const creepTypeConfig = {
 
 /**
  * 获取此类型当前最高可用的构成
- * @param {CreepTypeNew} type
+ * @param {roleType} role
  * @param {number} energyCapacityAvailable
  * @returns {CreepType}
  */
-export function getCurrentCreepBody(type, energyCapacityAvailable) {
-  const {costs} = type;
-  const result = new CreepType(type.role, [], 0);
+export function getCurrentCreepBody(role, energyCapacityAvailable) {
+  const type = creepTypeConfig[role];
+  const { costs } = type;
+  const result = new CreepType(role, [], 0);
   if (energyCapacityAvailable < costs[0]) {
     result.body = type[costs[0]];
     result.cost = costs[0];

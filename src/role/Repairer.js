@@ -51,7 +51,8 @@ const Repairer = {
         creep.moveTo(new RoomPosition(25, 25, 'W21N37'));
         return;
       }
-      const ind = RoomUtil.findAllContainer(creep.room).length > 1 ? 1 : 0;
+      const allContainers = RoomUtil.findAllContainer(creep.room);
+      const ind = allContainers.length > 1 ? 1 : 0;
       CreepUtil.takeOut(creep, RoomUtil.findAllContainer(creep.room)[ind]);
     }
   },

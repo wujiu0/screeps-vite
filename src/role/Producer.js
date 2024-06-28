@@ -1,5 +1,5 @@
 import config from '../config/config.js';
-import { BUILDER, getCurrentCreepBody, HARVESTER, REPAIRER, TRANSPORTER, UPGRADER } from '../types/CreepType.js';
+import { getCurrentCreepBody } from '../types/CreepType.js';
 import RoomUtil from '../utils/RoomUtil.js';
 import roleStrategies from './roleStrategies.js';
 
@@ -80,13 +80,13 @@ const producer = {
     if (harvester.count < config.SPAWN_MAX_CREEP_COUNT.harvester) {
       producer.produceCreep(spawn, 'HARVESTER');
     } else if (RoomUtil.findAllContainer(spawn.room).length > 0 && transporter.count < config.SPAWN_MAX_CREEP_COUNT.transporter) {
-      producer.produceCreepNew(spawn, '');
+      producer.produceCreep(spawn, 'TRANSPORTER');
     } else if (upgrader.count < config.SPAWN_MAX_CREEP_COUNT.upgrader) {
-      producer.produceCreepNew(spawn, UPGRADER);
+      producer.produceCreep(spawn, 'UPGRADER');
     } else if (repairer.count < config.SPAWN_MAX_CREEP_COUNT.repairer) {
-      producer.produceCreepNew(spawn, REPAIRER);
+      producer.produceCreep(spawn, 'REPAIRER');
     } else if (builder.count < config.SPAWN_MAX_CREEP_COUNT.builder) {
-      producer.produceCreepNew(spawn, BUILDER);
+      producer.produceCreep(spawn, 'BUILDER');
     } else {
       console.log('nothing to do');
     }

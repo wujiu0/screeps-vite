@@ -32,7 +32,7 @@ const config = {
   SPAWN_MAX_CREEP_COUNT: {
     harvester: 3,
     upgrader: 2,
-    transporter: 0,
+    transporter: 2,
     builder: 2,
     communicator: 1,
     temp: 99,

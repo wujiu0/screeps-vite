@@ -1,17 +1,26 @@
-import CreepUtil from '../utils/CreepUtil.js';
+import creepUtil from '../utils/creepUtil.js';
 import RoomUtil from '../utils/RoomUtil.js';
 
 /**
  * energy 采集收获者
  */
 export default {
+  /**
+   * @param {Creep} creep
+   */
   run(creep) {
-    CreepUtil.checkLifeTime(creep);
+    creepUtil.checkLifeTime(creep);
     // 首先检查creep所处的房间是否正确，如果不正确，就移动到正确的房间
     if (creep.memory.room && creep.room.name !== creep.memory.room) {
       creep.moveTo(new RoomPosition(25, 25, creep.memory.room));
       return;
     }
+    // 先建造container之后才有打工人
+    const allContainers = RoomUtil.findAllContainer(creep.room);
+    if (allContainers.length) {
+      return;
+    }
+    
     if (!creep.store.getCapacity()) {
       // 身上没有空间，只需要走到container上持续打工
       // creep.say('╰(*°▽°*)╯');
@@ -19,13 +28,12 @@ export default {
       const containers = RoomUtil.findAllContainer(creep.room);
       // const {group} = creep.memory;
       // this.staticHarvest(creep, sources[group], containers[group].pos);
-      if (containers[0] && creep.pos.y !== containers[0].pos.y) {
+      if (containers[0] && !creep.pos.isEqualTo(containers[0])) {
         creep.moveTo(containers[0]);
       }
       const sources = creep.room.find(FIND_SOURCES);
       // const {group} = creep.memory;
-      // this.harvest(creep, sources[group]);
-      this.harvest(creep, sources[0]);
+      creepUtil.harvest(creep, sources[0]);
     } else if (creep.store.getFreeCapacity() > 0) {
       // 身上有空间但是没有满，自由采集能量
       const sources = creep.room.find(FIND_SOURCES);
@@ -38,7 +46,7 @@ export default {
       // creep.say('🚧 transfer');
       const targets = RoomUtil.findSurplusEnergyStructure(creep.room);
       if (targets.length > 0) {
-        CreepUtil.transfer(creep, targets[0]);
+        creepUtil.transfer(creep, targets[0]);
       }
     }
   },
@@ -77,4 +85,3 @@ export default {
     }
   },
 };
-

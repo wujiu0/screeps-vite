@@ -13,12 +13,12 @@ export default {
     if (creep.ticksToLive && creep.ticksToLive === 50) {
       creep.say('🔄 renew');
       const spawn = Game.spawns[creep.memory.spawn];
-      if (--spawn.memory.creepsStatus[creep.memory.role].count < 0) {
-        spawn.memory.creepsStatus[creep.memory.role].count = 0;
+      if (--Memory.creepsStatus[creep.memory.role].count < 0) {
+        Memory.creepsStatus[creep.memory.role].count = 0;
       }
       // 传递重生者的序号
       console.log('renew', creep.name);
-      spawn.memory.creepsStatus[creep.memory.role].next = creep.memory.num;
+      Memory.creepsStatus[creep.memory.role].nextList.push(creep.memory.num);
       // 不再设置自杀，只是更改计数器，通知spawn开始制造新的creep，然后等待自然死亡
       // creep.suicide();
     }
@@ -57,6 +57,9 @@ export default {
    * @param {Structure} src
    */
   takeOut(creep, src) {
+    if (!src) {
+      this.harvest(creep);
+    }
     const res = creep.withdraw(src, RESOURCE_ENERGY);
     if (res === ERR_NOT_IN_RANGE) {
       creep.moveTo(src, {visualizePathStyle: {stroke: '#ffaa00'}});
@@ -80,10 +83,11 @@ export default {
    * 输送能量
    * @param {Creep} creep
    * @param {StructureSpawn | StructureExtension | StructureContainer | StructureStorage | StructureTower} target
+   * @param {ResourceConstant} [resourceType]
    * @return {number}
    */
-  transfer(creep, target) {
-    const res = creep.transfer(target, RESOURCE_ENERGY);
+  transfer(creep, target, resourceType = RESOURCE_ENERGY) {
+    const res = creep.transfer(target, resourceType);
     if (res === ERR_NOT_IN_RANGE) {
       creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
     }

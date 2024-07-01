@@ -1,16 +1,16 @@
 // 定义所有策略对象
-import Builder from './Builder.js';
-import Communicator from './Communicator.js';
-import Harvester from './Harvester.js';
-import Repairer from './Repairer.js';
-import Transporter from './Transporter.js';
-import Upgrader from './Upgrader.js';
+import builder from './builder.js';
+import communicator from './communicator.js';
+import harvester from './harvester.js';
+import repairer from './repairer.js';
+import transporter from './transporter.js';
+import upgrader from './upgrader.js';
 
 export default {
-  Harvester,
-  Upgrader,
-  Builder,
-  Repairer,
-  Transporter,
-  Communicator,
+  harvester,
+  upgrader,
+  builder,
+  repairer,
+  transporter,
+  communicator,
 };

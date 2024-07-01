@@ -5,6 +5,7 @@ export default {
   build: {
     minify: false,
     sourcemap: false,
+    target: 'es2015',
     lib: {
       entry: 'src/main.js',
       name: 'main',

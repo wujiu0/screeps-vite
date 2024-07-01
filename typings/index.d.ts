@@ -1,10 +1,4 @@
 //@ts-nocheck
-interface CreepType {
-  role: roleType;
-  body: BodyPartConstant[];
-  cost: number;
-}
-
 interface CreepTypeNew {
   role: roleType;
   costs: number[];
@@ -12,7 +6,7 @@ interface CreepTypeNew {
   [index: number]: BodyPartConstant[];
 }
 
-type roleType = 'HARVESTER' | 'TRANSPORTER' | 'UPGRADER' | 'BUILDER' | 'COMMUNICATOR' | 'REPAIRER' | 'TEMP';
+type roleType = 'harvester' | 'transporter' | 'upgrader' | 'builder' | 'communicator' | 'repairer' | 'temp';
 
 interface CreepMemory {
   /**
@@ -36,6 +30,10 @@ interface CreepMemory {
    */
   room: string;
   /**
+   * harvest状态
+   */
+  harvesting?: boolean;
+  /**
    * upgrade状态
    */
   upgrading?: boolean;
@@ -57,21 +55,25 @@ interface CreepMemory {
   tmp?: boolean;
 }
 
-interface SpawnMemory {
+interface Memory {
   /**
    * 初始化标志
    */
   initFlag: boolean;
   /**
+   * 调整配置标志
+   */
+  adjustFlag: boolean;
+  /**
    * creeps状态
    */
   creepsStatus: {
-    harvester: { count: number; next: number };
-    transporter: { count: number; next: number };
-    upgrader: { count: number; next: number };
-    builder: { count: number; next: number };
-    repairer: { count: number; next: number };
-    communicator: { count: number; next: number };
-    temp: { count: number; next: number };
+    harvester: { count: number; nextList: Array<number> };
+    transporter: { count: number; nextList: Array<number> };
+    upgrader: { count: number; nextList: Array<number> };
+    builder: { count: number; nextList: Array<number> };
+    repairer: { count: number; nextList: Array<number> };
+    communicator: { count: number; nextList: Array<number> };
+    temp: { count: number; nextList: Array<number> };
   };
 }

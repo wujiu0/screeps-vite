@@ -1,3 +1,5 @@
+import core from '../common/core.js';
+
 export default {
 
   /**
@@ -45,4 +47,44 @@ export default {
   findAllRoad(room) {
     return room.find(FIND_STRUCTURES).filter((structure) => structure.structureType === STRUCTURE_ROAD);
   },
+  /**
+   * 寻找所有的wall
+   * @param{Room} room
+   * @returns {(StructureWall | StructureRampart)[]}
+   */
+  findAllWallAndRampart(room) {
+    return room.find(FIND_STRUCTURES).filter((structure) => structure.structureType === STRUCTURE_WALL || structure.structureType === STRUCTURE_RAMPART);
+  },
+  /**
+   * 寻找所有的constructionSite
+   * @param{Room} room
+   * @returns {ConstructionSite[]}
+   */
+  findConstructionSite(room) {
+    return room.find(FIND_CONSTRUCTION_SITES);
+  },
+
+  /**
+   * 获取房间中的可用的spawn
+   *
+   * 若都不可用，return the first of all spawns in this room
+   *
+   * @param{Room | string} room
+   * @returns {StructureSpawn}
+   */
+  getAvailableSpawn(room) {
+    room = this._normalizingRoom(room);
+    const spawnsInCurrentRoom = core.state.spawns.filter(spawn => spawn.room.name === room.name);
+    return spawnsInCurrentRoom.filter(spawn => !spawn.spawning)[0] || core.state.spawns[0];
+  },
+
+  _normalizingRoom(room) {
+    if (!room) {
+      room = core.state.room;
+    }
+    if(typeof room === 'string') {
+      room = Game.rooms[room];
+    }
+    return room;
+  }
 };

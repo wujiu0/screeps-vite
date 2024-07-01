@@ -10,6 +10,14 @@ export default {
    */
   run(creep) {
     creepUtil.checkLifeTime(creep);
+    if (creep.memory.harvesting && creep.store.getFreeCapacity() === 0) {
+      creep.memory.harvesting = false;
+      creep.say('👣 transfer');
+    }
+    if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] === 0) {
+      creep.memory.harvesting = true;
+      creep.say('🔄 harvest');
+    }
     // 首先检查creep所处的房间是否正确，如果不正确，就移动到正确的房间
     if (creep.memory.room && creep.room.name !== creep.memory.room) {
       creep.moveTo(new RoomPosition(25, 25, creep.memory.room));
@@ -17,32 +25,22 @@ export default {
     }
     // 先建造container之后才有打工人
     const allContainers = RoomUtil.findAllContainer(creep.room);
-    if (allContainers.length) {
-      return;
-    }
-    
     if (!creep.store.getCapacity()) {
       // 身上没有空间，只需要走到container上持续打工
-      // creep.say('╰(*°▽°*)╯');
+      creep.say('╰(*°▽°*)╯');
       // const sources = creep.room.find(FIND_SOURCES);
-      const containers = RoomUtil.findAllContainer(creep.room);
-      // const {group} = creep.memory;
+      const {group} = creep.memory;
       // this.staticHarvest(creep, sources[group], containers[group].pos);
-      if (containers[0] && !creep.pos.isEqualTo(containers[0])) {
-        creep.moveTo(containers[0]);
+      if (allContainers[group] && !creep.pos.isEqualTo(allContainers[group])) {
+        creep.moveTo(allContainers[group]);
+      } else {
+        creepUtil.harvest(creep);
       }
-      const sources = creep.room.find(FIND_SOURCES);
-      // const {group} = creep.memory;
-      creepUtil.harvest(creep, sources[0]);
-    } else if (creep.store.getFreeCapacity() > 0) {
-      // 身上有空间但是没有满，自由采集能量
-      const sources = creep.room.find(FIND_SOURCES);
-      // const {group} = creep.memory;
-      // this.harvest(creep, sources[group]);
-      this.harvest(creep, sources[0]);
+    } else if (creep.memory.harvesting) {
+      // creepUtil.harvest(creep, creep.room.find(FIND_SOURCES)[1]);
+      creepUtil.harvest(creep);
     } else {
       // 身上有空间并且满了，去建筑里面放能量
-      console.log(creep.name, 'transfer');
       // creep.say('🚧 transfer');
       const targets = RoomUtil.findSurplusEnergyStructure(creep.room);
       if (targets.length > 0) {

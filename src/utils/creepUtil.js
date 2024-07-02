@@ -1,3 +1,7 @@
+import { getCurrentCreepBody } from '../common/CreepType.js';
+import infoUtil from './InfoUtil.js';
+import roomUtil from './RoomUtil.js';
+
 export default {
   /**
    * 检查creep是否需要续命
@@ -92,5 +96,46 @@ export default {
       creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
     }
     return res;
+  },
+  /**
+   *
+   * @param {roleType} role
+   * @param {string} [room]
+   * @param {boolean} [tmp] 是否为临时creep
+   */
+  produceCreep(role, room, tmp = false) {
+    const spawn = roomUtil.getAvailableSpawn(room);
+    const type = getCurrentCreepBody(role, spawn.room.energyCapacityAvailable);
+    console.log(`capacity:${spawn.room.energyCapacityAvailable},available:${spawn.room.energyAvailable},produce:${type.role}-${type.cost}`);
+    if (spawn.room.energyAvailable >= type.cost && !spawn.spawning) {
+      // 类型计数器++
+      const lastId = Memory.creepsStatus[type.role].count;
+      // 获取是否有重生者，如果没有，使用计数器中的id
+      let {nextList} = Memory.creepsStatus[type.role];
+      const nextId = !nextList || !nextList.length ? lastId : nextList[0];
+      // 加时间戳防止重名导致无法建造
+      const res = spawn.spawnCreep(type.body, type.role + '-' + nextId + '-' + Date.now(), {
+        memory: {
+          role: type.role,
+          num: nextId,
+          room: room || spawn.room.name,
+          group: nextId % 2,
+          tmp,
+        },
+      });
+
+      spawn.room.visual.text(type.role + '-' + nextId, spawn.pos.x + 1, spawn.pos.y, {
+        align: 'left',
+        opacity: 0.8,
+      });
+      if (res !== 0) {
+        console.log('PRODUCE_ERROR:', res, infoUtil.errorMap(res));
+        return;
+      }
+      // 建造完成之后，序号置为-1，表示没有重生者
+      Memory.creepsStatus[type.role].nextList = nextList.slice(1);
+      Memory.creepsStatus[type.role].count++;
+      console.log('生产了一个' + type.role, '当前数量：', Memory.creepsStatus[type.role].count);
+    }
   },
 };

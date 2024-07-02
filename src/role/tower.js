@@ -6,9 +6,10 @@ export function towerWork() {
 
   /**
    *
-   * @type {StructureTower}
+   * @type {StructureTower[]}
    */
   const towers = core.state.towers;
+  if (!towers.length) return;
   const closestHostile = towers[0].pos.findClosestByRange(FIND_HOSTILE_CREEPS);
   if (towers[0]) {
     if (closestHostile) {
@@ -46,10 +47,11 @@ export function towerWork() {
 
 function getRepairTargets(tower) {
   const allWallAndRampart = roomUtil.findAllWallAndRampart(tower.room);
+  const lowHits = allWallAndRampart.filter(wall => wall.hits < 1000 * 1000);
+
   if (core.state.constructionSites.length) {
-    return allWallAndRampart.filter(wall => wall.hits < 1000 * 1000)
-      .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
+    return  lowHits.sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
   }
-  return allWallAndRampart.filter(wall => wall.hits < wall.hitsMax * 0.1)
+  return (lowHits.length ? lowHits : allWallAndRampart.filter(wall => wall.hits < wall.hitsMax * 0.1) || [])
     .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
 }

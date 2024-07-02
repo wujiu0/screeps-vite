@@ -63,6 +63,14 @@ export default {
   findConstructionSite(room) {
     return room.find(FIND_CONSTRUCTION_SITES);
   },
+  /**
+   * 寻找所有的tower
+   * @param room
+   * @returns {StructureTower[]}
+   */
+  findTowers(room) {
+    return room.find(FIND_MY_STRUCTURES).filter((structure) => structure.structureType === STRUCTURE_TOWER);
+  },
 
   /**
    * 获取房间中的可用的spawn

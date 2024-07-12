@@ -21,10 +21,11 @@ const creepTypeConfig = {
   },
   BUILDER: {
     role: 'builder',
-    costs: [300, 400, 700],
+    costs: [300, 400, 700, 1100],
     300: [WORK, CARRY, MOVE, CARRY, MOVE],
     400: [WORK, WORK, CARRY, MOVE, CARRY, MOVE],
     700: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+    1100: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
   },
   COMMUNICATOR: {
     role: 'communicator',

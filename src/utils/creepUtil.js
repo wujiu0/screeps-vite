@@ -63,6 +63,7 @@ export default {
   takeOut(creep, src) {
     if (!src) {
       this.harvest(creep);
+      return ERR_INVALID_TARGET;
     }
     const res = creep.withdraw(src, RESOURCE_ENERGY);
     if (res === ERR_NOT_IN_RANGE) {
@@ -95,6 +96,8 @@ export default {
     if (res === ERR_NOT_IN_RANGE) {
       creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
     }
+
+    // infoUtil.log(creep, 'transfer', res);
     return res;
   },
   /**

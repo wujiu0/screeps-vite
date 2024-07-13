@@ -1,6 +1,7 @@
 import { getCurrentCreepBody } from '../common/CreepType.js';
-import infoUtil from './InfoUtil.js';
-import roomUtil from './RoomUtil.js';
+import roleStrategies from '../role/roleStrategies.js';
+import infoUtil from './infoUtil.js';
+import roomUtil from './roomUtil.js';
 
 export default {
   /**
@@ -136,9 +137,18 @@ export default {
         return;
       }
       // 建造完成之后，序号置为-1，表示没有重生者
-      Memory.creepsStatus[type.role].nextList = nextList.slice(1);
+      Memory.creepsStatus[type.role].nextList = nextList?.slice(1) || [];
       Memory.creepsStatus[type.role].count++;
       console.log('生产了一个' + type.role, '当前数量：', Memory.creepsStatus[type.role].count);
     }
   },
+
+  /**
+   * produce a tmp creep
+   * @param role
+   * @param room
+   */
+  produceTCreep(role, room) {
+    this.produceCreep(role, room, true);
+  }
 };

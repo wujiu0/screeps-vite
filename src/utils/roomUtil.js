@@ -77,7 +77,7 @@ export default {
    *
    * 若都不可用，return the first of all spawns in this room
    *
-   * @param{Room | string} room
+   * @param {Room | string} [room] 房间对象或者房间名, 默认为当前房间
    * @returns {StructureSpawn}
    */
   getAvailableSpawn(room) {

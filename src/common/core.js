@@ -1,9 +1,7 @@
 import creepUtil from '../utils/creepUtil.js';
-import InfoUtil from '../utils/InfoUtil.js';
-import roomUtil from '../utils/RoomUtil.js';
+import utils from '../utils/index.js';
+import roomUtil from '../utils/roomUtil.js';
 import config from './config.js';
-import { getCurrentCreepBody } from './CreepType.js';
-import infoUtil from '../utils/InfoUtil.js';
 import roleStrategies from '../role/roleStrategies.js';
 
 export default {
@@ -12,12 +10,14 @@ export default {
 
   initState() {
     const room = Game.rooms['W42S42'];
+    const spawns = [Game.spawns['Spawn0']];
     this.state = {
       room,
-      spawns: [Game.spawns['Spawn0']],
+      spawns,
       containers: roomUtil.findAllContainer(room),
       towers: roomUtil.findTowers(room),
       storage: room.storage || null,
+      coreWorkPosition: new RoomPosition(26, 16, room.name),
       constructionSites: roomUtil.findConstructionSite(room),
     };
   },
@@ -34,7 +34,7 @@ export default {
     const {
       containers,
       towers,
-      constructionSites
+      constructionSites,
     } = this.state;
     if (!containers.length) {
       config.SPAWN_MAX_CREEP_COUNT.repairer = 0;
@@ -42,15 +42,13 @@ export default {
     if (towers.length >= 2) {
       config.SPAWN_MAX_CREEP_COUNT.repairer = 1;
     }
-    if(constructionSites.length){
-      config.SPAWN_MAX_CREEP_COUNT.builder = 3;
+    if (constructionSites.length) {
+      config.SPAWN_MAX_CREEP_COUNT.builder = 2;
       config.SPAWN_MAX_CREEP_COUNT.upgrader = 1;
     }
   },
   initUtils() {
-    Game.creepUtil = creepUtil;
-    Game.roomUtil = roomUtil;
-    Game.infoUtil = InfoUtil;
+    Game.utils = utils;
   },
   /**
    *

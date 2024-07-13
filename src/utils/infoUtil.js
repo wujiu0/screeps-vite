@@ -1,6 +1,6 @@
 import config from '../common/config.js';
 
-const InfoUtil = {
+const infoUtil = {
   /**
    * errorCode 映射
    * @param {number} errCode
@@ -81,7 +81,7 @@ const InfoUtil = {
    */
   warn(creep, funcName, resCode) {
     (config.LOG_LEVEL === 'info' || config.LOG_LEVEL === 'warn') &&
-    console.log(`INFO: ${creep.name}: ${funcName}:${resCode}: ${this.errorMap(resCode)}`);
+    console.log(`WARN: ${creep.name}: ${funcName}:${resCode}: ${this.errorMap(resCode)}`);
   },
   /**
    * error
@@ -90,7 +90,7 @@ const InfoUtil = {
    * @param {number} resCode
    */
   error(creep, funcName, resCode) {
-    console.log(`INFO: ${creep.name}: ${funcName}:${resCode}: ${this.errorMap(resCode)}`);
+    console.log(`ERROR: ${creep.name}: ${funcName}:${resCode}: ${this.errorMap(resCode)}`);
   },
 };
-export default InfoUtil;
+export default infoUtil;

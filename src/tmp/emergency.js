@@ -24,7 +24,7 @@ Game.spawns.Spawn0.spawnCreep(
   });
 // 创建临时运输者
 Game.spawns.Spawn0.spawnCreep(
-  [CARRY, CARRY, CARRY, CARRY,  MOVE, MOVE],
+  [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
   'TTransporter' + Game.time,
   {
     memory: {
@@ -35,7 +35,7 @@ Game.spawns.Spawn0.spawnCreep(
     },
   });
 Game.spawns.Spawn0.spawnCreep(
-  [CARRY, CARRY,CARRY,CARRY,CARRY, MOVE, MOVE,  MOVE],
+  [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
   'TTransporter' + Game.time,
   {
     memory: {
@@ -86,7 +86,16 @@ Game.spawns.Spawn0.spawnCreep(
 //创建临时攻击者
 Game.spawns.Spawn0.spawnCreep(
   [ATTACK, ATTACK, ATTACK, MOVE],
-  'TAttacker');
+  'TAttacker',
+  {
+    memory: {
+      role: 'attacker',
+      num: 999,
+      group: 1,
+      tmp: true,
+    }
+  }
+);
 Game.getObjectById('64b19b83ae5199e68646efd1').room.find(FIND_HOSTILE_SPAWNS);
 Game.getObjectById('64b19b83ae5199e68646efd1').attack(Game.getObjectById('64b19b83ae5199e68646efd1').room.find(FIND_HOSTILE_SPAWNS)[0]);
 
@@ -105,34 +114,20 @@ if (creep.name === 'TBuilder1') {
 
 // 创建临时房间预订者
 Game.spawns.Spawn0.spawnCreep(
-  [CLAIM, MOVE, MOVE],
-  'TReserver1',
+  [CLAIM,CLAIM, MOVE, MOVE],
+  'TClaimer',
   {
     memory: {
-      role: 'reserver',
+      role: 'claimer',
       num: 999,
       group: 0,
+      room: 'W41S42',
       tmp: true,
     },
   });
 
-if (creep.memory.tmp) {
-
-  if (creep.pos.roomName == 'W21N38') {
-    const sources00 = creep.room.find(FIND_SOURCES);
-    if (creep.harvest(sources00[creep.memory.group]) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(sources00[creep.memory.group], {visualizePathStyle: {stroke: '#ffaa00'}});
-    }
-  } else {
-    creep.moveTo(new RoomPosition(37, 48, 'W21N38'));
-  }
-} else {
-  const ind = RoomUtil.findAllContainer(creep.room).length > 1 ? 1 : 0;
-  creepUtil.takeOut(creep, RoomUtil.findAllContainer(creep.room)[ind]);
-}
-
 Game.spawns.Spawn0.spawnCreep(
-  [WORK, WORK, WORK, WORK,WORK, WORK,WORK, WORK,WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+  [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
   'TBuilder',
   {
     memory: {

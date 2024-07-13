@@ -68,12 +68,22 @@ interface Memory {
    * creeps状态
    */
   creepsStatus: {
-    harvester: { count: number; nextList: Array<number> };
-    transporter: { count: number; nextList: Array<number> };
-    upgrader: { count: number; nextList: Array<number> };
-    builder: { count: number; nextList: Array<number> };
-    repairer: { count: number; nextList: Array<number> };
-    communicator: { count: number; nextList: Array<number> };
-    temp: { count: number; nextList: Array<number> };
+    harvester: creepStatusItem;
+    transporter: creepStatusItem;
+    upgrader: creepStatusItem;
+    builder: creepStatusItem;
+    repairer: creepStatusItem;
+    allocator: creepStatusItem;
+    communicator: creepStatusItem;
   };
+}
+
+interface creepStatusItem {
+  count: number;
+  nextList: Array<number>;
+}
+
+interface Game {
+  creepUtil: typeof creepUtil;
+  infoUtil: infoUtil;
 }

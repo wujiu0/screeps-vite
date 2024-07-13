@@ -5,7 +5,7 @@
 + MOVE（移动）：50能量
 + WORK（工作）：100能量
 + CARRY（搬运）：50能量
-+ ATTACK（攻击）：80能量
++ ATTACK（攻击）：80能量(30hits/unit)
 + RANGED_ATTACK（远程攻击）：150能量
 + HEAL（治疗）：250能量
 + CLAIM（占领）：600能量

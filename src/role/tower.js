@@ -1,6 +1,6 @@
 import core from '../common/core.js';
-import RoomUtil from '../utils/RoomUtil.js';
-import roomUtil from '../utils/RoomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
 
 export function towerWork() {
 
@@ -17,7 +17,7 @@ export function towerWork() {
     } else {
       const structureWalls = getRepairTargets(towers[0]);
       if (structureWalls[0]) {
-        towers[0].repair(structureWalls[structureWalls.length - 1]);
+        towers[0].repair(structureWalls[0]);
       }
     }
 
@@ -30,9 +30,9 @@ export function towerWork() {
     const structureWalls = roomUtil.findAllWallAndRampart(towers[1].room)
       .filter(wall => wall.hits < 1000 * 1000)
       .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
-    const containers = RoomUtil.findAllContainer(towers[1].room).filter(container => container.hits < container.hitsMax * 0.8)
+    const containers = roomUtil.findAllContainer(towers[1].room).filter(container => container.hits < container.hitsMax * 0.8)
       .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
-    const roads = RoomUtil.findAllRoad(towers[1].room)
+    const roads = roomUtil.findAllRoad(towers[1].room)
       .filter((road) => road.hits < road.hitsMax * 0.7)
       .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
 
@@ -50,8 +50,8 @@ function getRepairTargets(tower) {
   const lowHits = allWallAndRampart.filter(wall => wall.hits < 1000 * 1000);
 
   if (core.state.constructionSites.length) {
-    return  lowHits.sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
+    return lowHits.sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
   }
-  return (lowHits.length ? lowHits : allWallAndRampart.filter(wall => wall.hits < wall.hitsMax * 0.1) || [])
+  return (lowHits.length ? lowHits : allWallAndRampart.filter(wall => wall.hits < 1.5 * 1000 * 1000) || [])
     .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
 }

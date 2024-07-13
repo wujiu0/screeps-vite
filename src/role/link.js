@@ -1,5 +1,7 @@
-import roomUtil from '../utils/RoomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
 
+//TODO 采用中央集权制度， 所有资源统一交由storage管理, 由storage分配给其他建筑
+// {link_resource} -> {link_storage} -> {link_controller} > {tower} > {spawn, extension}
 export function towerWork() {
 
   /**
@@ -8,22 +10,7 @@ export function towerWork() {
    */
   const link_storage = Game.getObjectById('667fa4bdc4157c5b54fd4104');
   const link_controller = Game.getObjectById('667f9f3e3f1b7c5b54f9f3f4');
-  if (tower) {
-    // // console.log('wujiu:🚀🚀🚀~~~~~~~~tower-9-towerWork:~~~~~~ 300000000 === structure.hits', 300000000 === structure.hits)
-    // const closestDamagedStructure = tower.pos.findInRange(FIND_STRUCTURES, 1000).filter(structure => structure.hits < structure.hitsMax);
-    // if (closestDamagedStructure[0]) {
-    //   tower.repair(closestDamagedStructure[0]);
-    // }
-
-    const closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-    if (closestHostile) {
-      tower.attack(closestHostile);
-    } else {
-      const structureWalls = roomUtil.findAllWallAndRampart(tower.room).filter(wall => wall.hits < 50 * 1000);
-      if (structureWalls[0]) {
-        tower.repair(structureWalls[structureWalls.length - 1]);
-      }
-    }
-
-  }
+  
+  // stage 1: storage -> controller
+  
 }

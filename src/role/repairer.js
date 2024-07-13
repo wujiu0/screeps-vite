@@ -1,5 +1,6 @@
+import core from '../common/core.js';
 import creepUtil from '../utils/creepUtil.js';
-import RoomUtil from '../utils/RoomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
 
 export default {
   /**
@@ -21,10 +22,10 @@ export default {
      *
      * @type {Structure[]}
      */
-    const containers = RoomUtil.findAllContainer(creep.room).filter((container) => {
+    const containers = roomUtil.findAllContainer(creep.room).filter((container) => {
       return container.hits < container.hitsMax * 0.8;
     });
-    const roads = RoomUtil.findAllRoad(creep.room)
+    const roads = roomUtil.findAllRoad(creep.room)
       .filter((road) => road.hits < road.hitsMax * 0.7)
       .sort((a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax);
 
@@ -36,18 +37,23 @@ export default {
 
       // 如果没有需要修理的container/road，就去flag处等待
       if (targets.length === 0) {
+        // const target = Game.getObjectById('66835116f57cc61a3b785f91');
+        // if (creep.dismantle(target) == ERR_NOT_IN_RANGE) {
+        //   creep.moveTo(target);
+        // }
         creep.moveTo(Game.flags['Waiting']);
         return;
       }
-      if (creep.repair(targets[0]) === ERR_NOT_IN_RANGE) {
-        creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+      const targetIndex = creep.memory.group ? targets.length - 1 : 0;
+      if (creep.repair(targets[targetIndex]) === ERR_NOT_IN_RANGE) {
+        creep.moveTo(targets[targetIndex], {visualizePathStyle: {stroke: '#ffffff'}});
       }
     } else {
-
-      const source = RoomUtil.findAllContainer(creep.room).length > 0 && creep.room.energyCapacityAvailable >= 650 ? RoomUtil.findAllContainer(creep.room)[0] : RoomUtil.findHasEnergyStructure(creep.room)[0];
+      const source = core.state.containers.length >= 3 ?
+        core.state.containers[2] :
+        roomUtil.findHasEnergyStructure(creep.room)[0];
       creepUtil.takeOut(creep, source);
     }
   },
 
 };
-

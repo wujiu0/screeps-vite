@@ -1,6 +1,6 @@
 import core from '../common/core.js';
 import creepUtil from '../utils/creepUtil.js';
-import RoomUtil from '../utils/RoomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
 
 export default {
   /**
@@ -43,7 +43,7 @@ export default {
         // 当storage存在且可用能量 > 20K 后， 首先考虑从storage中获取能量
         const src = core.state.storage && core.state.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 20 * 1000 ?
           core.state.storage :
-          RoomUtil.findAllContainer(creep.room)[2] ?? RoomUtil.findAllContainer(creep.room)[creep.memory.group];
+          roomUtil.findAllContainer(creep.room)[2] ?? roomUtil.findAllContainer(creep.room)[creep.memory.group];
         creepUtil.takeOut(creep, src);
       }
     }

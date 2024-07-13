@@ -17,13 +17,18 @@ export default {
     // 注：判断条件不能设置为【小于】50，计数器会出现问题
     if (creep.ticksToLive && creep.ticksToLive === 50) {
       creep.say('🔄 renew');
-      const spawn = Game.spawns[creep.memory.spawn];
-      if (--Memory.creepsStatus[creep.memory.role].count < 0) {
-        Memory.creepsStatus[creep.memory.role].count = 0;
+      const renew = roleStrategies[creep.memory.role].renew || _renew;
+      renew();
+      function _renew() {
+        // TODO: 实现自有的续命逻辑
+        if (--Memory.creepsStatus[creep.memory.role].count < 0) {
+          Memory.creepsStatus[creep.memory.role].count = 0;
+        }
+        // 传递重生者的序号
+        console.log('renew', creep.name);
+        Memory.creepsStatus[creep.memory.role].nextList.push(creep.memory.num);
       }
-      // 传递重生者的序号
-      console.log('renew', creep.name);
-      Memory.creepsStatus[creep.memory.role].nextList.push(creep.memory.num);
+
       // 不再设置自杀，只是更改计数器，通知spawn开始制造新的creep，然后等待自然死亡
       // creep.suicide();
     }

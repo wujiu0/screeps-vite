@@ -32,11 +32,11 @@ const config = {
   SPAWN_MAX_CREEP_COUNT: {
     harvester: 2,
     upgrader: 2,
-    transporter: 3,
+    transporter: 2,
     builder: 0,
     communicator: 1,
-    temp: 99,
     repairer: 2,
+    allocator: 0,
   },
   WALL_MAX_HP_PERCENT: 0.03,
   LOG_LEVEL: 'info',

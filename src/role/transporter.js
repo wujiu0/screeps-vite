@@ -1,6 +1,6 @@
 import core from '../common/core.js';
 import creepUtil from '../utils/creepUtil.js';
-import RoomUtil from '../utils/RoomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
 
 /**
  * energy 运输者
@@ -27,19 +27,21 @@ export default {
      * @type {StructureTower}
      */
     const towers = core.state.towers;
-    const containers = RoomUtil.findAllContainer(creep.room);
+    const containers = roomUtil.findAllContainer(creep.room);
     let res = 999;
     if (creep.memory.transferring) {
       // 优先从container【0】中取出能量输送给spawn或者extension
-      const spawnAndExtensions = RoomUtil.findSurplusEnergyStructure(creep.room);
-      if (creep.store.getFreeCapacity() - creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+      const spawnAndExtensions = roomUtil.findSurplusEnergyStructure(creep.room);
+      if (creep.store.getUsedCapacity() - creep.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
         // 如果有其他资源，优先存储其他资源
         for (const resourceType in creep.store) {
-          creepUtil.transfer(creep, creep.room.storage, resourceType);
+          creepUtil.transfer(creep, core.state.storage, resourceType);
         }
+        return;
       }
       if (spawnAndExtensions.length > 0) {
-        res = creepUtil.transfer(creep, spawnAndExtensions[0]);
+        const targetIndex = creep.memory.group ? spawnAndExtensions.length - 1 : 0;
+        res = creepUtil.transfer(creep, spawnAndExtensions[targetIndex]);
       } else if (towers[0]?.store.getFreeCapacity(RESOURCE_ENERGY) >= 500) {
         // TODO 临时塔(全能)
         res = creepUtil.transfer(creep, towers[0]);
@@ -56,7 +58,7 @@ export default {
         // 如果container都满了，则将能量存储到storage中
         res = creepUtil.transfer(creep, creep.room.storage);
       }
-      // InfoUtil.log(creep, 'transfer', res);
+      // infoUtil.log(creep, 'transfer', res);
 
     } else {
       // 如果地图上有掉落的资源，优先捡起来

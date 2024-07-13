@@ -1,5 +1,7 @@
 // 定义所有策略对象
+import attacker from './attacker.js';
 import builder from './builder.js';
+import claimer from './claimer.js';
 import communicator from './communicator.js';
 import harvester from './harvester.js';
 import repairer from './repairer.js';
@@ -13,4 +15,6 @@ export default {
   repairer,
   transporter,
   communicator,
+  attacker,
+  claimer
 };

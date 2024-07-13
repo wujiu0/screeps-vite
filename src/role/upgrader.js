@@ -1,5 +1,6 @@
+import core from '../common/core.js';
 import creepUtil from '../utils/creepUtil.js';
-import RoomUtil from '../utils/RoomUtil.js';
+import roomUtil from '../utils/roomUtil.js';
 
 /**
  * controller 升级者
@@ -23,6 +24,7 @@ export default {
         // creep.say(creep.name.substring(creep.name.length - 1) + '⚡');
       }
     })();
+    if(!this.checkWorkPos(creep)) return;
     // 根据状态开始work
     if (creep.memory.upgrading) {
       if (!creep.room.controller) {
@@ -33,12 +35,10 @@ export default {
         creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
       }
     } else {
-      if (RoomUtil.findAllContainer(creep.room).length >= 3) {
-        this.checkWorkPos(creep);
-        // const pos = RoomUtil.findAllContainer(creep.room)[2].pos;
-        creepUtil.takeOut(creep, RoomUtil.findAllContainer(creep.room)[2]);
+      if (core.state.containers.length >= 3) {
+        creepUtil.takeOut(creep, core.state.containers[2]);
       } else {
-        creepUtil.takeOut(creep, RoomUtil.findAllContainer(creep.room)[0]);
+        creepUtil.takeOut(creep, core.state.containers[0]);
       }
     }
 
@@ -48,9 +48,13 @@ export default {
    * @param{Creep} creep
    */
   checkWorkPos(creep) {
-    if (RoomUtil.findAllContainer(creep.room).length >= 3){
-      !creep.pos.isNearTo(creep.room.controller) && creep.moveTo(creep.room.controller);
+    if (core.state.containers.length >= 3){
+      if(!creep.pos.isNearTo(creep.room.controller) ){
+        creep.moveTo(creep.room.controller);
+        return false;
+      }
     }
+    return true;
   },
 };
 

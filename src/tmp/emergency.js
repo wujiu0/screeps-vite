@@ -11,7 +11,7 @@ Game.spawns.Spawn0.spawnCreep(
     },
   });
 Game.spawns.Spawn0.spawnCreep(
-  [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE],
+  [WORK, WORK, WORK, MOVE],
   'THarvester',
   {
     memory: {
@@ -19,7 +19,6 @@ Game.spawns.Spawn0.spawnCreep(
       num: 999,
       group: 0,
       tmp: true,
-      room: 'W21N38',
     },
   });
 // 创建临时运输者

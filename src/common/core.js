@@ -9,6 +9,7 @@ export default {
   state: {},
 
   initState() {
+    // TODO 检查是否触发多次调用
     const room = Game.rooms['W42S42'];
     const spawns = [Game.spawns['Spawn0']];
     this.state = {

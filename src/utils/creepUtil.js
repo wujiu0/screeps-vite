@@ -9,7 +9,6 @@ export default {
    * @param {Creep} creep
    */
   checkLifeTime(creep) {
-
     // 如果是tmp Creep，不需要检查
     if (creep.memory.tmp) return;
 
@@ -49,7 +48,6 @@ export default {
    * @param {Source} [source] 指定的source
    */
   harvest(creep, source) {
-
     if (!source) {
       const sources = creep.room.find(FIND_SOURCES);
       source = sources[creep.memory.group];
@@ -57,7 +55,7 @@ export default {
     const res = creep.harvest(source);
 
     if (res === ERR_NOT_IN_RANGE) {
-      creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+      creep.moveTo(source, { visualizePathStyle: { stroke: '#ffaa00' } });
     }
     return res;
   },
@@ -73,7 +71,7 @@ export default {
     }
     const res = creep.withdraw(src, RESOURCE_ENERGY);
     if (res === ERR_NOT_IN_RANGE) {
-      creep.moveTo(src, {visualizePathStyle: {stroke: '#ffaa00'}});
+      creep.moveTo(src, { visualizePathStyle: { stroke: '#ffaa00' } });
     }
     return res;
   },
@@ -86,7 +84,7 @@ export default {
   pioneer(creep, source) {
     const res = creep.pickup(source);
     if (res === ERR_NOT_IN_RANGE) {
-      creep.moveTo(source, {visualizePathStyle: {stroke: '#d000ff'}});
+      creep.moveTo(source, { visualizePathStyle: { stroke: '#d000ff' } });
     }
     return res;
   },
@@ -100,7 +98,7 @@ export default {
   transfer(creep, target, resourceType = RESOURCE_ENERGY) {
     const res = creep.transfer(target, resourceType);
     if (res === ERR_NOT_IN_RANGE) {
-      creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+      creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
     }
 
     // infoUtil.log(creep, 'transfer', res);
@@ -111,16 +109,17 @@ export default {
    * @param {roleType} role
    * @param {string} [room]
    * @param {boolean} [tmp] 是否为临时creep
+   * @param {number} [cost] 指定最高消耗
    */
-  produceCreep(role, room, tmp = false) {
+  produceCreep(role, room, tmp = false, cost) {
     const spawn = roomUtil.getAvailableSpawn(room);
-    const type = getCurrentCreepBody(role, spawn.room.energyCapacityAvailable);
+    const type = getCurrentCreepBody(role, cost || spawn.room.energyCapacityAvailable);
     console.log(`capacity:${spawn.room.energyCapacityAvailable},available:${spawn.room.energyAvailable},produce:${type.role}-${type.cost}`);
     if (spawn.room.energyAvailable >= type.cost && !spawn.spawning) {
       // 类型计数器++
       const lastId = Memory.creepsStatus[type.role].count;
       // 获取是否有重生者，如果没有，使用计数器中的id
-      let {nextList} = Memory.creepsStatus[type.role];
+      let { nextList } = Memory.creepsStatus[type.role];
       const nextId = !nextList || !nextList.length ? lastId : nextList[0];
       // 加时间戳防止重名导致无法建造
       const res = spawn.spawnCreep(type.body, type.role + '-' + nextId + '-' + Date.now(), {
@@ -153,7 +152,18 @@ export default {
    * @param role
    * @param room
    */
-  produceTCreep(role, room) {
-    this.produceCreep(role, room, true);
-  }
+  produceTCreep(role, room, cost) {
+    this.produceCreep(role, room, true, cost);
+  },
+
+  restart() {
+    Game.spawns.Spawn0.spawnCreep([WORK, WORK, CARRY, MOVE], 'THarvester' + Date.now(), {
+      memory: {
+        role: 'harvester',
+        num: 999,
+        group: 0,
+        tmp: true,
+      },
+    });
+  },
 };

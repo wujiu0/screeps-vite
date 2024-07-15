@@ -82,8 +82,3 @@ interface creepStatusItem {
   count: number;
   nextList: Array<number>;
 }
-
-interface Game {
-  creepUtil: typeof creepUtil;
-  infoUtil: infoUtil;
-}

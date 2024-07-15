@@ -24,7 +24,7 @@ const config = {
       count: 0,
       nextList: [],
     },
-    temp: {
+    allocator: {
       count: 0,
       nextList: [],
     },

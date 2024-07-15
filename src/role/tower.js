@@ -1,6 +1,5 @@
 import core from '../common/core.js';
 import roomUtil from '../utils/roomUtil.js';
-import roomUtil from '../utils/roomUtil.js';
 
 export function towerWork() {
 

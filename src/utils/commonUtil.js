@@ -1,18 +1,26 @@
+import core from '../common/core.js';
+
 export default {
-  // TODO 实现定时器
   /**
    *
-   * @param {*} func
-   * @param {*} tick
+   * @param callback 回调函数
+   * @param tick 延迟tick
+   * @param params 回调函数参数
+   * @returns 定时器id
    */
-  setTimeout_tick(func, tick) {
-    const start = Game.time;
-    const end = start + tick;
-    if (Game.time >= end) {
-      func();
-    }
+  setTimeout(callback, tick, ...params) {
+    const timerManager = core.state.timerManager;
+    return timerManager.addTimer(callback, tick, params);
   },
-  clearTimeout_tick(timeoutId) {
-    
+
+  /**
+   * 清除定时器
+   * @param timerId 定时器id
+   */
+  clearTimeout(timerId) {
+    if (!timerId || typeof timerId !== 'number') return;
+
+    const timerManager = core.state.timerManager;
+    timerManager.removeTimer(timerId);
   },
 };

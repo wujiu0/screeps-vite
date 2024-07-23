@@ -13,6 +13,7 @@ export default {
       formats: ['cjs'],
     },
     rollupOptions: {
+      external: ['lodash'],
       output: {
         format: 'cjs', // 输出格式为 CommonJS
         entryFileNames: '[name].js', // 入口文件的命名

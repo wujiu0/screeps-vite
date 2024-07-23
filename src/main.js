@@ -11,14 +11,13 @@ const main = {
       }
     }
 
-    // 初始化spawn
-    const Spawn0 = Game.spawns['Spawn0'];
     core.initState();
     core.initUtils();
-    core.initOptions(Spawn0);
-
+    core.initOptions();
+    // 初始化定时器
+    core.initTimerManager();
     // 设置spawn生产规则
-    core.setProductionRule(Spawn0);
+    core.setProductionRule();
 
     // 设置creeps工作规则
     core.setWorkRules();

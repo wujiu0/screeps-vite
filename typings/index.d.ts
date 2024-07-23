@@ -76,9 +76,24 @@ interface Memory {
     allocator: creepStatusItem;
     communicator: creepStatusItem;
   };
+  timers: Timer[];
 }
 
 interface creepStatusItem {
   count: number;
-  nextList: Array<number>;
+  nextList: number[];
+}
+
+interface Game {
+  utils: any;
+}
+
+interface Timer {
+  id: number;
+  /**
+   * 回调函数名，由于要在JSON中传递，需用string
+   */
+  cbName: string;
+  params: any[];
+  endTick: number;
 }

@@ -1,3 +1,4 @@
+import { TimerManager } from '../base/task/timerManager.js';
 import creepUtil from '../utils/creepUtil.js';
 import utils from '../utils/index.js';
 import roomUtil from '../utils/roomUtil.js';
@@ -22,11 +23,7 @@ export default {
       constructionSites: roomUtil.findConstructionSite(room),
     };
   },
-  /**
-   *
-   * @param {StructureSpawn} spawn
-   */
-  initOptions(spawn) {
+  initOptions() {
     if (!Memory.initFlag) {
       Memory.creepsStatus = config.SPAWN_INIT_CONFIG;
       Memory.initFlag = true;
@@ -51,6 +48,10 @@ export default {
   initUtils() {
     Game.utils = utils;
   },
+  initTimerManager() {
+    this.timerManager = TimerManager.getInstance();
+    this.timerManager.work();
+  },
   /**
    *
    * @param {roleType} role
@@ -59,12 +60,7 @@ export default {
   produceCreep(role, room) {
     creepUtil.produceCreep(role, room);
   },
-
-  /**
-   *
-   * @param {StructureSpawn} spawn
-   */
-  setProductionRule(spawn) {
+  setProductionRule() {
     const {
       harvester,
       transporter,
@@ -76,7 +72,7 @@ export default {
     // 优先级：harvester>transporter>upgrader>repairer>builder
     if (harvester.count < config.SPAWN_MAX_CREEP_COUNT.harvester) {
       this.produceCreep('harvester');
-    } else if (spawn.room.energyCapacityAvailable >= 650 && transporter.count < config.SPAWN_MAX_CREEP_COUNT.transporter) {
+    } else if (this.state.room.energyCapacityAvailable >= 650 && transporter.count < config.SPAWN_MAX_CREEP_COUNT.transporter) {
       this.produceCreep('transporter');
     } else if (upgrader.count < config.SPAWN_MAX_CREEP_COUNT.upgrader) {
       this.produceCreep('upgrader');

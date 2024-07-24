@@ -49,10 +49,11 @@ export default {
         creep.moveTo(targets[targetIndex], {visualizePathStyle: {stroke: '#ffffff'}});
       }
     } else {
-      const source = core.state.containers.length >= 3 ?
-        core.state.containers[2] :
-        roomUtil.findHasEnergyStructure(creep.room)[0];
-      creepUtil.takeOut(creep, source);
+      const src = core.state.storage && core.state.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 20 * 1000 ?
+        core.state.storage :
+        roomUtil.findAllContainer(creep.room)[2] ??
+        roomUtil.findAllContainer(creep.room)[creep.memory.group];
+      creepUtil.takeOut(creep, src);
     }
   },
 

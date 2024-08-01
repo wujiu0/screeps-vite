@@ -96,4 +96,11 @@ export default {
       }
     }
   },
+
+  onTickStart() {
+    this.timerManager.work();
+  },
+  onTickEnd() {
+    this.timerManager.clear();
+  },
 };

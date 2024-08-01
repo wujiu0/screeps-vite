@@ -63,6 +63,13 @@ export class TimerManager {
   }
 
   /**
+   * 持久化定时器队列
+   */
+  static save() {
+    Memory.timers = timerManager.timers;
+  }
+
+  /**
    * 添加定时器
    * @param callback
    * @param delay
